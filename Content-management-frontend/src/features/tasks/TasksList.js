@@ -17,7 +17,7 @@ const TasksList = () => {
     const navigate = useNavigate()
     const handleEdit = (params) => navigate(`/dash/tasks/${params}`)
 
-    const { username, _id, isManager, isAdmin } = useAuth()
+    const { username } = useAuth()
     //console.log(_id)
     const {
         data: tasks,
@@ -44,7 +44,7 @@ const TasksList = () => {
         const { ids, entities } = tasks
         const rows = []
         Object.keys(entities).forEach((val) => {
-            if(entities[val].username === username)
+            if(entities[val].username === username || entities[val].owner === username)
                 rows.push(
                     {
                         id: entities[val].id,
@@ -80,14 +80,6 @@ const TasksList = () => {
             
         ]
 
-        let filteredIds
-        if (isManager || isAdmin) {
-            filteredIds = [...ids]
-        } else {
-            filteredIds = ids.filter(taskId => entities[taskId].username === username)
-        }
-
-        const tableContent = ids?.length && filteredIds.map(taskId => <Task key={taskId} taskId={taskId} />)
 
         content = (
             <Box

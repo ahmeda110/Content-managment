@@ -84,8 +84,8 @@ const SideBar = () => {
     const { username, isManager, isAdmin } = useAuth()
 
     return (
-        <div style={{ background: "red", height: "100%" }}>
-            <Box width='250px' textAlign='center' role='presentation'>
+        <div style={{ background: "white", borderRight: "1px solid rgba(20, 26, 31, 0.8)", position: "fixed", height: "100%", width: '20%'}}>
+            <Box textAlign='center' role='presentation'>
                 {/*
                 <Typography pb={2} variant='h6' component='div'>
                     CMS

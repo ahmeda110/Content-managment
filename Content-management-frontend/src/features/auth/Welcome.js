@@ -24,13 +24,17 @@ const Welcome = () => {
         if (isSuccess) navigate('/login')
     }, [isSuccess, navigate])
 
+    const logOut = () => {
+        sendLogout()
+        navigate('/login')
+    }
 
     const logoutButton = (
         <Button
         variant="contained"
         color="error"
         title="Logout"
-        onClick={sendLogout}>
+        onClick={logOut}>
             Log Out
         </Button>
     )

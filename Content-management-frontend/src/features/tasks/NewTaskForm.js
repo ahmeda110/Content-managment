@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom"
 import { useAddNewTaskMutation } from "./tasksApiSlice"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSave } from "@fortawesome/free-solid-svg-icons"
+import useAuth from "../../hooks/useAuth"
 
 import * as React from 'react';
 import { Typography, TextField, Select, Box, MenuItem, FormControl, InputLabel } from "@mui/material";
@@ -11,6 +12,7 @@ import Button from '@mui/material/Button'
 import Stack from '@mui/material/Stack'
 
 const NewTaskForm = ({ users }) => {
+    const { username } = useAuth()
 
     const [addNewTask, {
         isLoading,
@@ -43,7 +45,7 @@ const NewTaskForm = ({ users }) => {
     const onSaveTaskClicked = async (e) => {
         e.preventDefault()
         if (canSave) {
-            await addNewTask({ user: userId, title, text })
+            await addNewTask({ user: userId, title, text, owner: username })
         }
     }
 

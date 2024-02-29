@@ -12,8 +12,11 @@ const DashLayout = () => {
                     <DashHeader />
                 </div>
                 <div style={{ display: 'flex', flexDirection: 'row', height: "100%"}}>
-                    <SideBar  style={{ width: '30%'}}/>
-                    <Outlet  style={{ width: '70%'}}/> 
+                    <SideBar style={{ width: '30%' }}/>
+                    <div style={{ marginLeft: '20%', width: '70%' }}>
+                        <Outlet style={{ width: '100%' }}/> 
+                    </div>
+                    
                 </div>
             </div>
             

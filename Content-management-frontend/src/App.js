@@ -20,7 +20,7 @@ function App() {
     <Routes>
       <Route path="/" element={<Layout />}>
         {/* public routes */}
-        <Route index element={<Public />} />
+        <Route index element={<Login />} />
         <Route path="login" element={<Login />} />
 
         {/* Protected Routes */}

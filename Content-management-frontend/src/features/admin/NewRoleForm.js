@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
-import { useAddNewTaskMutation } from "./tasksApiSlice"
+import { useAddNewRoleMutation } from "./rolesApiSlice"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSave } from "@fortawesome/free-solid-svg-icons"
 
@@ -10,14 +10,14 @@ import { Typography, TextField, Select, Box, MenuItem, FormControl, InputLabel }
 import Button from '@mui/material/Button'
 import Stack from '@mui/material/Stack'
 
-const NewTaskForm = ({ users }) => {
+const NewRoleForm = ({ users }) => {
 
-    const [addNewTask, {
+    const [addNewRole, {
         isLoading,
         isSuccess,
         isError,
         error
-    }] = useAddNewTaskMutation()
+    }] = useAddNewRoleMutation()
 
     const navigate = useNavigate()
 
@@ -30,7 +30,7 @@ const NewTaskForm = ({ users }) => {
             setTitle('')
             setText('')
             setUserId('')
-            navigate('/dash/tasks')
+            navigate('/dash/roles')
         }
     }, [isSuccess, navigate])
 
@@ -40,10 +40,10 @@ const NewTaskForm = ({ users }) => {
 
     const canSave = [title, text, userId].every(Boolean) && !isLoading
 
-    const onSaveTaskClicked = async (e) => {
+    const onSaveRoleClicked = async (e) => {
         e.preventDefault()
         if (canSave) {
-            await addNewTask({ user: userId, title, text })
+            await addNewRole({ user: userId, title, text })
         }
     }
 
@@ -86,7 +86,7 @@ const NewTaskForm = ({ users }) => {
             }}
             >
 
-                <Typography variant='h6' component='div'>Create New Task</Typography>
+                <Typography variant='h6' component='div'>Create New Role</Typography>
                 <TextField
                 required
                 id="outlined-required"
@@ -144,7 +144,7 @@ const NewTaskForm = ({ users }) => {
                     color="success"
                     title="Save"
                     disabled={!canSave}
-                    onClick={onSaveTaskClicked}
+                    onClick={onSaveRoleClicked}
                     >
                         Create
                     </Button>
@@ -157,4 +157,4 @@ const NewTaskForm = ({ users }) => {
     return content
 }
 
-export default NewTaskForm
+export default NewRoleForm

@@ -16,6 +16,10 @@ import Person from '@mui/icons-material/Person'
 import Group from "@mui/icons-material/Group";
 import PersonAddAlt1 from "@mui/icons-material/PersonAddAlt1";
 import PersonOff from "@mui/icons-material/PersonOff";
+// Admin Settings
+import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
+import AbcIcon from '@mui/icons-material/Abc';
+
 
 const OpenTasks = () => {
     const [open, setOpen] = useState(false);
@@ -38,10 +42,12 @@ const OpenTasks = () => {
                         <ListItemIcon><FileOpen /></ListItemIcon>
                         <ListItemText primary={<Typography style={ {color: "Black"}}>View Tasks</Typography>}/>
                     </ListItemButton>
+                    {/*
                     <ListItemButton sx={{ pl: 4 }} component={Link} to="/dash/tasks/new">
                         <ListItemIcon><NoteAdd /></ListItemIcon>
                         <ListItemText primary={<Typography style={ {color: "Black"}}>Add Task</Typography>}/>
                     </ListItemButton>
+                    */}
                 </List>
             </Collapse>
         </Box>
@@ -79,6 +85,43 @@ const OpenUsers = () => {
     )
 }
 
+const OpenAdmin = () => {
+    const [open, setOpen] = useState(false);
+
+    const handleClick = () => {
+        setOpen(!open);
+    };
+
+    return (
+        <Box>
+            <ListItemButton onClick={handleClick}>
+                <ListItemIcon><ManageAccountsIcon /></ListItemIcon>
+                <ListItemText primary={<Typography style={{color: "Black", display: 'flex', justifyContent: 'space-between'}}>Admin Settings
+                {open ? <ExpandLess /> : <ExpandMore />}
+                </Typography>}/>
+            </ListItemButton>
+            <Collapse in={open} timeout="auto" unmountOnExit>
+                <List component="div" disablePadding>
+                    <ListItemButton sx={{ pl: 4 }} component={Link} to="/dash/admin">
+                        <ListItemIcon><AbcIcon /></ListItemIcon>
+                        <ListItemText primary={<Typography style={{color: "Black"}}>Roles & Status</Typography>}/>
+                    </ListItemButton>
+                    <ListItemButton sx={{ pl: 4 }} component={Link} to="/dash/tasks/new">
+                        <ListItemIcon><NoteAdd /></ListItemIcon>
+                        <ListItemText primary={<Typography style={ {color: "Black"}}>Add Task</Typography>}/>
+                    </ListItemButton>
+                    {/*
+                    <ListItemButton sx={{ pl: 4 }} component={Link} to="/dash/users/new">
+                        <ListItemIcon><AbcIcon /></ListItemIcon>
+                        <ListItemText primary={<Typography style={ {color: "Black"}}>Add User</Typography>}/>
+                    </ListItemButton>
+                    */}
+                </List>
+            </Collapse>
+        </Box>
+    )
+}
+
 const SideBar = () => {
     
     const { username, isManager, isAdmin } = useAuth()
@@ -101,6 +144,7 @@ const SideBar = () => {
                     <OpenTasks />
                     {/* Users */}
                     {(isManager || isAdmin) && <OpenUsers />}
+                    {(isManager || isAdmin) && <OpenAdmin />}
                 </List>
             </Box>
         </div>

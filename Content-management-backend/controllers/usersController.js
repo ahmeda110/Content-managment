@@ -22,7 +22,7 @@ const getAllUsers = asyncHandler(async (req, res) => {
 // @route POST /users
 // @access Private
 const createNewUser = asyncHandler(async (req, res) => {
-    const { username, password, roles, email, admin, owner } = req.body
+    const { username, password, roles, email, admin, owner, contract } = req.body
 
     // Confirm data
     if (!username || !password || !Array.isArray(roles) || !roles.length) {
@@ -40,7 +40,7 @@ const createNewUser = asyncHandler(async (req, res) => {
     //const hashedPwd = await bcrypt.hash(password, 10) // salt rounds
     const hashedPwd = password
 
-    const userObject = { username, "password": hashedPwd, roles, email, admin, owner }
+    const userObject = { username, "password": hashedPwd, roles, email, admin, owner, contract}
 
     // Create and store new user 
     const user = await User.create(userObject)

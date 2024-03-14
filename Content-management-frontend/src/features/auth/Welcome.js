@@ -51,21 +51,9 @@ const Welcome = () => {
 
             <p>{today}</p>
 
-
             <Stack direction="row" spacing={2} className="logoutButton">
                 {logoutButton}
             </Stack>
-            
-            {/*
-            <p><Link to="/dash/tasks">View techTasks</Link></p>
-
-            <p><Link to="/dash/tasks/new">Add New techTask</Link></p>
-
-            {(isManager || isAdmin) && <p><Link to="/dash/users">View User Settings</Link></p>}
-
-            {(isManager || isAdmin) && <p><Link to="/dash/users/new">Add New User</Link></p>}
-            */}
-
         </section>
     )
 

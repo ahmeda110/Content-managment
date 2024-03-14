@@ -32,7 +32,7 @@ const getAllTasks = asyncHandler(async (req, res) => {
 // @route POST /tasks
 // @access Private
 const createNewTask = asyncHandler(async (req, res) => {
-    const { user, title, text, owner } = req.body
+    const { user, title, text, owner, keywords, sKeywords, country, dueDate, status} = req.body
 
     // Confirm data
     if (!user || !title || !text) {
@@ -47,7 +47,7 @@ const createNewTask = asyncHandler(async (req, res) => {
     }
 
     // Create and store the new user 
-    const task = await Task.create({ user, title, text, owner })
+    const task = await Task.create({ user, title, text, owner, status, webUrl, keywords, sKeywords, country, dueDate})
 
     if (task) { // Created 
         return res.status(201).json({ message: 'New task created' })

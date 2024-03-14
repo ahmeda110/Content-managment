@@ -10,6 +10,8 @@ import EditUser from './features/users/EditUser'
 import NewUserForm from './features/users/NewUserForm'
 import EditTask from './features/tasks/EditTask'
 import NewTask from './features/tasks/NewTask'
+//import AdminList from 
+import AdminForm from './features/users/AdminForm'
 import Prefetch from './features/auth/Prefetch'
 import PersistLogin from './features/auth/PersistLogin'
 import RequireAuth from './features/auth/RequireAuth'
@@ -39,10 +41,19 @@ function App() {
                   </Route>
                 </Route>
 
+                <Route element={<RequireAuth allowedRoles={[ROLES.Manager, ROLES.Admin]} />}>
+                  <Route path="admin">
+                    <Route index element={<AdminForm />} />
+                    {/* <Route path="new" element={<NewUserForm />} /> */}
+                  </Route>
+                </Route>
+
                 <Route path="tasks">
                   <Route index element={<TasksList />} />
                   <Route path=":id" element={<EditTask />} />
-                  <Route path="new" element={<NewTask />} />
+                  <Route element={<RequireAuth allowedRoles={[ROLES.Manager, ROLES.Admin]} />}>
+                    <Route path="new" element={<NewTask />} />
+                  </Route>
                 </Route>
 
               </Route>{/* End Dash */}

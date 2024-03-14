@@ -14,6 +14,10 @@ const userSchema = new mongoose.Schema({
         type: String,
         default: "Employee"
     }],
+    userRoles: [{
+        type: String,
+        required: false
+    }],
     active: {
         type: Boolean,
         default: true
@@ -28,6 +32,10 @@ const userSchema = new mongoose.Schema({
     },
     owner: {
         type: String,
+        required: false
+    },
+    contract: {
+        type: Number,
         required: false
     }
 })

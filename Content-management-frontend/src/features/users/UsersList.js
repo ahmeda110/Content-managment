@@ -4,7 +4,7 @@ import User from './User'
 
 import useAuth from "../../hooks/useAuth"
 import Box from '@mui/material/Box'
-import { DataGrid } from '@mui/x-data-grid';
+import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 import renderCell, { Button } from '@mui/material'
 import Edit from '@mui/icons-material/Edit'
 import { EditNote } from "@mui/icons-material";
@@ -92,6 +92,9 @@ const UsersList = () => {
       sx={{ height: 400, width: '80%', marginLeft: '1%', marginTop: '1%' }}
       >
         <DataGrid
+          slots={{
+            toolbar: GridToolbar,
+          }}
           rows={rows}
           columns={columns}
           initialState={{

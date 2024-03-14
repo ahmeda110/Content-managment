@@ -46,7 +46,7 @@ const EditUserForm = ({ user }) => {
 
     useEffect(() => {
         setValidPassword(PWD_REGEX.test(password))
-    }, [password])
+    }, [password]) 
 
     useEffect(() => {
         console.log(isSuccess)

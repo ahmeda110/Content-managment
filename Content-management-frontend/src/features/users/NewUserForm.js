@@ -22,6 +22,7 @@ import Stack from '@mui/material/Stack'
 const USER_REGEX = /^[A-z]{3,20}$/
 const MAIL_REGEX = /^[A-z@.]{3,64}$/
 const PWD_REGEX = /^[A-z0-9!@#$%]{4,12}$/
+const CONT_REGEX = /^[0-9]{1,4}$/
 
 
 const Owner = () => {
@@ -51,10 +52,16 @@ const NewUserForm = () => {
     const [roles, setRoles] = useState(["Employee"])
     const [admin, setAdmin] = useState(false)
     const [owner, setOwner] = useState('')
+    const [contract, setContract] = useState('')
+    const [validContract, setValidContract] = useState(false)
 
     useEffect(() => {
         setValidUsername(USER_REGEX.test(username))
     }, [username])
+
+    useEffect(() => {
+        setValidContract(CONT_REGEX.test(contract))
+    }, [contract])
 
     useEffect(() => {
         setOwner(USER_REGEX.test(owner))
@@ -76,6 +83,7 @@ const NewUserForm = () => {
             setRoles([])
             setAdmin(false)
             setOwner('')
+            setContract('')
             navigate('/dash/users')
         }
     }, [isSuccess, navigate])
@@ -84,6 +92,7 @@ const NewUserForm = () => {
     const onEmailChanged = e => setEmail(e.target.value)
     const onPasswordChanged = e => setPassword(e.target.value)
     const onAdminChanged = () => setAdmin(prev => !prev)
+    const onContractChanged = e => setContract(e.target.value)
     //const onOwnerChanged = e => setOwner(Owner())
 
     const onRolesChanged = e => {
@@ -94,12 +103,12 @@ const NewUserForm = () => {
         setRoles(values)
     }
 
-    const canSave = [roles.length, validUsername, validEmail, validPassword].every(Boolean) && !isLoading
+    const canSave = [roles.length, validUsername, validEmail, validPassword, validContract].every(Boolean) && !isLoading
 
     const onSaveUserClicked = async (e) => {
         e.preventDefault()
         if (canSave) {
-            await addNewUser({ username, password, roles, email, admin, owner })
+            await addNewUser({ username, password, roles, email, admin, owner, contract })
         }
     }
 
@@ -125,7 +134,7 @@ const NewUserForm = () => {
         } = e;
         setRoles(
             typeof value == 'string' ? value.split(',') : value,
-            console.log(value)
+            //console.log(value)
         );
     };
 
@@ -161,6 +170,15 @@ const NewUserForm = () => {
                     label="Email"
                     value={email}
                     onChange={onEmailChanged} />
+                </div>
+                <div style={{ paddingTop: "20px" }}>
+                    <TextField
+                    required
+                    id="outlined-required"
+                    variant="outlined"
+                    label="Contract (number)"
+                    value={contract}
+                    onChange={onContractChanged} />
                 </div>
 
 

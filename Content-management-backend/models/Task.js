@@ -21,7 +21,8 @@ const taskSchema = new mongoose.Schema(
             default: false
         },
         owner: {
-            type: String
+            type: String,
+            required: false
         },
         status: {
             type: String,

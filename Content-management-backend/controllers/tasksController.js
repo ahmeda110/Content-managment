@@ -32,7 +32,7 @@ const getAllTasks = asyncHandler(async (req, res) => {
 // @route POST /tasks
 // @access Private
 const createNewTask = asyncHandler(async (req, res) => {
-    const { user, title, text, owner, keywords, sKeywords, country, dueDate, status} = req.body
+    const { user, title, text, owner, keywords, sKeywords, webUrl, country, dueDate, status} = req.body
 
     // Confirm data
     if (!user || !title || !text) {

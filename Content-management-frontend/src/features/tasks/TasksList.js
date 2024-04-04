@@ -7,7 +7,7 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-import renderCell, { Button, Menu } from '@mui/material'
+import renderCell, { Button, Menu, Typography } from '@mui/material'
 import Edit from '@mui/icons-material/Edit'
 import { EditNote } from "@mui/icons-material";
 
@@ -16,12 +16,63 @@ import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { selectTaskById } from './tasksApiSlice'
 
+import { useState, useEffect } from "react"
+import { useUpdateTaskMutation, useDeleteTaskMutation } from "./tasksApiSlice"
+
+const EditAssignedUsers = ({ users }) => {
+    const [userId, setUserId] = useState(users[0].id)
+
+    const [updateTask, {
+        isLoading,
+        isSuccess,
+        isError,
+        error
+    }] = useUpdateTaskMutation()
+
+    const options = users.map(user => {
+        return (
+            <MenuItem
+                sx={{ minWidth: 120, minHeight: 80 }}
+                key={user.id}
+                value={user.id}
+            > {user.username}</MenuItem >
+        )
+    })
+    const content = (
+        <FormControl fullWidth>
+            <InputLabel>Assign to</InputLabel>
+            <Select
+            label="Assign to"
+            //id="roles"
+            //name="roles"
+            //multiple
+            //value={tasks}
+            //onChange={handleChange}
+            MenuProps={{
+                PaperProps: {
+                    style: {
+                    maxHeight: 180,
+                    width: 210,
+                    },
+                },
+            }}
+            >
+                {options}
+            </Select>
+            <Button>
+                Assign
+            </Button>
+        </FormControl>
+    )
+    return content
+}
 
 const TasksList = () => {
     const navigate = useNavigate()
     const handleEdit = (params) => navigate(`/dash/tasks/${params}`)
 
     const { username, isManager, isAdmin } = useAuth()
+    
     //console.log(_id)
     const {
         data: tasks,
@@ -53,6 +104,18 @@ const TasksList = () => {
             key={role}
             value={role}
             > {role}</MenuItem >
+        )
+    })
+    */
+
+    /*
+    const options = users.map(user => {
+        return (
+            <MenuItem
+                sx={{ minWidth: 120, minHeight: 80 }}
+                key={user.id}
+                value={user.id}
+            > {user.username}</MenuItem >
         )
     })
     */
@@ -103,13 +166,8 @@ const TasksList = () => {
             { field: 'website', headerName: 'Website', width: 150, editable: false },
             { field: 'status', headerName: 'Status', width: 150, editable: false },
             { field: 'keywords', headerName: 'Keywords', width: 150, editable: false },
-            { field: 'sKeywords', headerName: 'SKeywords', width: 150, editable: false },
-            { field: 'dueDate', headerName: 'Due Date', width: 150, editable: false }
-            /*
-            { field: 'title', headerName: 'Title', width: 150, editable: false },
-            { field: 'username', headerName: 'Username', width: 150, editable: false },
-            { field: 'updatedAt', headerName: 'Updated', width: 150, editable: false },
-            { field: 'createdAt', headerName: 'Created', width: 150, editable: false },
+            { field: 'sKeywords', headerName: 'Semantic Keywords', width: 150, editable: false },
+            { field: 'dueDate', headerName: 'Due Date', width: 150, editable: false },
             {
                 field: 'edit', headerName: 'Edit', sortable: 'false', editable: false,
                 renderCell: (params) => {
@@ -124,6 +182,12 @@ const TasksList = () => {
                     )
                 }
             }
+            /*
+            { field: 'title', headerName: 'Title', width: 150, editable: false },
+            { field: 'username', headerName: 'Username', width: 150, editable: false },
+            { field: 'updatedAt', headerName: 'Updated', width: 150, editable: false },
+            { field: 'createdAt', headerName: 'Created', width: 150, editable: false },
+            
             */
 
         ]
@@ -154,7 +218,7 @@ const TasksList = () => {
                     }}
                     >
                         {/*options*/}
-                        <MenuItem> User 1</MenuItem>
+                        <MenuItem>User 1</MenuItem>
                     </Select>
                     <Button>
                         Assign

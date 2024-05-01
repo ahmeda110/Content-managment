@@ -1,28 +1,25 @@
 import { Outlet } from 'react-router-dom'
-import DashHeader from './DashHeader'
-import DashFooter from './DashFooter'
-import SideBar from './SideBar'
-import { Directions } from '@mui/icons-material'
+import { useState } from 'react';
+import { Box } from "@mui/material";
+import Topbar from './DashHeader'
+import Sidebar from './SideBar'
 
 const DashLayout = () => {
+    const [isSidebar, setIsSidebar] = useState(true);
+
     return (
         <>
-            <div style={{ display: 'flex', flexDirection: 'column'}}>
-                <div>
-                    <DashHeader />
-                </div>
-                <div style={{ display: 'flex', flexDirection: 'row', height: "100%"}}>
-                    <SideBar style={{ width: '30%' }}/>
-                    <div style={{ marginLeft: '20%', width: '70%' }}>
-                        <Outlet style={{ width: '100%' }}/> 
-                    </div>
-                    
-                </div>
+
+        <Box sx={{ display: 'flex', height: '100vh' }}>
+          <Sidebar isSidebar={isSidebar} setIsSidebar={setIsSidebar} />
+          <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+            <Topbar setIsSidebar={setIsSidebar} />
+            <div>
+                <Outlet /> 
             </div>
+            </Box>
+        </Box>
             
-            
-            
-            {/*<DashFooter />*/}
         </>
     )
 }

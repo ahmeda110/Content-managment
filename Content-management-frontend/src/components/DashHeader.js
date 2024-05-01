@@ -5,10 +5,9 @@ import {
     faFileCirclePlus,
     faFilePen,
     faUserGear,
-    faUserPlus,
-    faRightFromBracket
+    faUserPlus
 } from "@fortawesome/free-solid-svg-icons"
-import { useNavigate, Link, useLocation } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 
 import { useSendLogoutMutation } from '../features/auth/authApiSlice'
 
@@ -117,15 +116,25 @@ const DashHeader = () => {
         )
     }
 
-    const logoutButton = (
-        <button
-            className="icon-button"
-            title="Logout"
-            onClick={sendLogout}
-        >
-            <FontAwesomeIcon icon={faRightFromBracket} />
-        </button>
-    )
+    const handleLogout = () => {
+        sendLogout(); // Initiate the logout process
+        navigate('/login'); // Navigate to the login page after successful logout
+    };
+
+    const handleProfileClick = () => {
+        // Add code to handle profile click action
+        console.log("Profile clicked");
+    };
+
+    const handleAccountClick = () => {
+        // Add code to handle account click action
+        console.log("Account clicked");
+    };
+
+    const handleDashboardClick = () => {
+        // Add code to handle dashboard click action
+        console.log("Dashboard clicked");
+    };
 
     const errClass = isError ? "errmsg" : "offscreen"
 
@@ -138,15 +147,13 @@ const DashHeader = () => {
                 {newTaskButton}
                 {newUserButton}
                 {tasksButton}
-                {userButton}
-                {logoutButton}
+                {userButton}                
             </>
         )
     }
 
     const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
-    
     const [anchorElNotif, setAnchorElNotif] = React.useState(null);
     const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -164,36 +171,36 @@ const DashHeader = () => {
     const handleCloseUserMenu = () => {
         setAnchorElUser(null);
     };
-
-    const content = (
+    
+    return (
         <div className='topNavBar'>
             <div>
                 <Typography
-                variant="h6"
-                noWrap
-                component="a"
-                sx={{
-                    mr: 2,
-                    fontFamily: 'monospace',
-                    fontWeight: 700,
-                    letterSpacing: '.3rem',
-                    color: 'white',
-                    pointer: "cursor",
-                    textDecoration: 'none',
-                }}>
+                    variant="h6"
+                    noWrap
+                    component="a"
+                    sx={{
+                        mr: 2,
+                        fontFamily: 'monospace',
+                        fontWeight: 700,
+                        letterSpacing: '.3rem',
+                        color: 'white',
+                        pointer: "cursor",
+                        textDecoration: 'none',
+                    }}>
                     CMS
                 </Typography>
             </div>
             <div style={{ display: "flex", alignItems: "center" }}>
                 <MenuItem>
                     <IconButton
-                    size="small"
-                    aria-label="show 17 new notifications"
-                    color="inherit"
-                    onClick={handleOpenNotifMenu}
+                        size="small"
+                        aria-label="show 17 new notifications"
+                        color="inherit"
+                        onClick={handleOpenNotifMenu}
                     >
                         <Badge badgeContent={17} color="error">
-                            <NotificationsIcon sx={{ color: "white" }}/>
+                            <NotificationsIcon sx={{ color: "white" }} />
                         </Badge>
                     </IconButton>
                 </MenuItem>
@@ -201,18 +208,18 @@ const DashHeader = () => {
                     id="menu-appbar"
                     anchorEl={anchorElNotif}
                     anchorOrigin={{
-                    vertical: 'bottom',
-                    horizontal: 'left',
+                        vertical: 'bottom',
+                        horizontal: 'left',
                     }}
                     keepMounted
                     transformOrigin={{
-                    vertical: 'top',
-                    horizontal: 'left',
+                        vertical: 'top',
+                        horizontal: 'left',
                     }}
                     open={Boolean(anchorElNotif)}
                     onClose={handleCloseNotifMenu}
                     sx={{
-                    display: { md: 'block', sx: 'none' },
+                        display: { md: 'block', sx: 'none' },
                     }}
                 >
                     <Typography>Notifications</Typography>
@@ -223,33 +230,31 @@ const DashHeader = () => {
                         <Avatar sx={{ height: '35px', width: '35px', color: "black" }}>{username[0]}</Avatar>
                     </IconButton>
                 </Tooltip>
-                {/* INSIDE PROFILE */} 
                 <Menu
                     sx={{ mt: '45px' }}
                     id="menu-appbar"
                     anchorEl={anchorElUser}
                     anchorOrigin={{
-                    vertical: 'top',
-                    horizontal: 'right',
+                        vertical: 'top',
+                        horizontal: 'right',
                     }}
                     keepMounted
                     transformOrigin={{
-                    vertical: 'top',
-                    horizontal: 'right',
+                        vertical: 'top',
+                        horizontal: 'right',
                     }}
                     open={Boolean(anchorElUser)}
                     onClose={handleCloseUserMenu}
                 >
-                    {settings.map((setting) => (
-                    <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                        <Typography textAlign="center">{setting}</Typography>
-                    </MenuItem>
-                    ))}
+                    {/* Menu items with functional handlers */}
+                    <MenuItem onClick={handleProfileClick}>Profile</MenuItem>
+                    <MenuItem onClick={handleAccountClick}>Account</MenuItem>
+                    <MenuItem onClick={handleDashboardClick}>Dashboard</MenuItem>
+                    <MenuItem onClick={handleLogout}>Logout</MenuItem>
                 </Menu>
+                </div> 
             </div>
-        </div>
-    )
+            );
 
-    return content
 }
-export default DashHeader
+            export default DashHeader

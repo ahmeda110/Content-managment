@@ -121,15 +121,22 @@ const DashHeader = () => {
         )
     }
 
-    const logoutButton = (
-        <button
-            className="icon-button"
-            title="Logout"
-            onClick={sendLogout}
-        >
-            <FontAwesomeIcon icon={faRightFromBracket} />
-        </button>
-    )
+    const handleLogout = () => {
+        sendLogout(); 
+        navigate('/login'); 
+    };
+
+    const handleProfileClick = () => {
+        console.log("Profile clicked");
+    };
+
+    const handleAccountClick = () => {
+        console.log("Account clicked");
+    };
+
+    const handleDashboardClick = () => {
+        navigate('/dash')
+    };
 
     const errClass = isError ? "errmsg" : "offscreen"
 
@@ -143,7 +150,7 @@ const DashHeader = () => {
                 {newUserButton}
                 {tasksButton}
                 {userButton}
-                {logoutButton}
+                {/logoutButton/}
             </>
         )
     }
@@ -240,11 +247,11 @@ const DashHeader = () => {
                     open={Boolean(anchorElUser)}
                     onClose={handleCloseUserMenu}
                 >
-                    {settings.map((setting) => (
-                    <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                        <Typography textAlign="center">{setting}</Typography>
-                    </MenuItem>
-                    ))}
+                    
+                    <MenuItem onClick={handleProfileClick}>Profile</MenuItem>
+                    <MenuItem onClick={handleAccountClick}>Account</MenuItem>
+                    <MenuItem onClick={handleDashboardClick}>Dashboard</MenuItem>
+                    <MenuItem onClick={handleLogout}>Logout</MenuItem>
                 </Menu>
             </Box>
 

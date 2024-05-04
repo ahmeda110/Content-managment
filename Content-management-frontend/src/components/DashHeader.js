@@ -132,8 +132,7 @@ const DashHeader = () => {
     };
 
     const handleDashboardClick = () => {
-        // Add code to handle dashboard click action
-        console.log("Dashboard clicked");
+        navigate('/dash')
     };
 
     const errClass = isError ? "errmsg" : "offscreen"

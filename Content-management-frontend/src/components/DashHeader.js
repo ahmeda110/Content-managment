@@ -5,9 +5,10 @@ import {
     faFileCirclePlus,
     faFilePen,
     faUserGear,
-    faUserPlus
+    faUserPlus,
+    faRightFromBracket
 } from "@fortawesome/free-solid-svg-icons"
-import { useNavigate, useLocation } from 'react-router-dom'
+import { useNavigate, Link, useLocation } from 'react-router-dom'
 
 import { useSendLogoutMutation } from '../features/auth/authApiSlice'
 
@@ -120,22 +121,15 @@ const DashHeader = () => {
         )
     }
 
-    const handleLogout = () => {
-        sendLogout();
-        navigate('/login'); 
-    };
-
-    const handleProfileClick = () => {
-        console.log("Profile clicked");
-    };
-
-    const handleAccountClick = () => {
-        console.log("Account clicked");
-    };
-
-    const handleDashboardClick = () => {
-        navigate('/dash')
-    };
+    const logoutButton = (
+        <button
+            className="icon-button"
+            title="Logout"
+            onClick={sendLogout}
+        >
+            <FontAwesomeIcon icon={faRightFromBracket} />
+        </button>
+    )
 
     const errClass = isError ? "errmsg" : "offscreen"
 
@@ -148,13 +142,15 @@ const DashHeader = () => {
                 {newTaskButton}
                 {newUserButton}
                 {tasksButton}
-                {userButton}                
+                {userButton}
+                {logoutButton}
             </>
         )
     }
 
     const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
+    
     const [anchorElNotif, setAnchorElNotif] = React.useState(null);
     const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -233,26 +229,28 @@ const DashHeader = () => {
                     id="menu-appbar"
                     anchorEl={anchorElUser}
                     anchorOrigin={{
-                        vertical: 'top',
-                        horizontal: 'right',
+                    vertical: 'top',
+                    horizontal: 'right',
                     }}
                     keepMounted
                     transformOrigin={{
-                        vertical: 'top',
-                        horizontal: 'right',
+                    vertical: 'top',
+                    horizontal: 'right',
                     }}
                     open={Boolean(anchorElUser)}
                     onClose={handleCloseUserMenu}
                 >
-                    <MenuItem onClick={handleProfileClick}>Profile</MenuItem>
-                    <MenuItem onClick={handleAccountClick}>Account</MenuItem>
-                    <MenuItem onClick={handleDashboardClick}>Dashboard</MenuItem>
-                    <MenuItem onClick={handleLogout}>Logout</MenuItem>
+                    {settings.map((setting) => (
+                    <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                        <Typography textAlign="center">{setting}</Typography>
+                    </MenuItem>
+                    ))}
                 </Menu>
             </Box>
 
         </Box>
     )
 
+    return content
 }
-            export default DashHeader
+export default DashHeader

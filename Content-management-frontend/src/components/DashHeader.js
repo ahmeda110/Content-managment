@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { useEffect } from 'react'
+import { useEffect, useContext } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
     faFileCirclePlus,
@@ -12,11 +12,14 @@ import { useNavigate, useLocation } from 'react-router-dom'
 import { useSendLogoutMutation } from '../features/auth/authApiSlice'
 
 import useAuth from '../hooks/useAuth'
+import { ColorModeContext, tokens } from "../theme";
+import { Box, IconButton, useTheme } from "@mui/material";
+import InputBase from "@mui/material/InputBase";
+import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
+import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
+import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
+
 import Typography from '@mui/material/Typography';
 import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -30,6 +33,7 @@ import AdbIcon from '@mui/icons-material/Adb';
 import Badge from '@mui/material/Badge';
 
 import NotificationsIcon from '@mui/icons-material/Notifications';
+import SearchIcon from "@mui/icons-material/Search";
 
 const DASH_REGEX = /^\/dash(\/)?$/
 const NOTES_REGEX = /^\/dash\/tasks(\/)?$/
@@ -117,17 +121,15 @@ const DashHeader = () => {
     }
 
     const handleLogout = () => {
-        sendLogout(); // Initiate the logout process
-        navigate('/login'); // Navigate to the login page after successful logout
+        sendLogout();
+        navigate('/login'); 
     };
 
     const handleProfileClick = () => {
-        // Add code to handle profile click action
         console.log("Profile clicked");
     };
 
     const handleAccountClick = () => {
-        // Add code to handle account click action
         console.log("Account clicked");
     };
 
@@ -170,65 +172,62 @@ const DashHeader = () => {
     const handleCloseUserMenu = () => {
         setAnchorElUser(null);
     };
-    
-    return (
-        <div className='topNavBar'>
-            <div>
-                <Typography
-                    variant="h6"
-                    noWrap
-                    component="a"
-                    sx={{
-                        mr: 2,
-                        fontFamily: 'monospace',
-                        fontWeight: 700,
-                        letterSpacing: '.3rem',
-                        color: 'white',
-                        pointer: "cursor",
-                        textDecoration: 'none',
-                    }}>
-                    CMS
-                </Typography>
-            </div>
-            <div style={{ display: "flex", alignItems: "center" }}>
-                <MenuItem>
-                    <IconButton
-                        size="small"
-                        aria-label="show 17 new notifications"
-                        color="inherit"
-                        onClick={handleOpenNotifMenu}
-                    >
-                        <Badge badgeContent={17} color="error">
-                            <NotificationsIcon sx={{ color: "white" }} />
-                        </Badge>
+
+    const theme = useTheme();
+    const colors = tokens(theme.palette.mode);
+    const colorMode = useContext(ColorModeContext);
+
+    const content = (
+        <Box display="flex" backgroundColor={colors.primary[400]} justifyContent="space-between" p={2}>
+            <Box display="flex" backgroundColor={colors.primary[400]} borderRadius="3px">
+                <InputBase sx={{ ml: 2, flex: 1 }} placeholder="Search" />
+                    <IconButton type="button" sx={{ p: 1 }}>
+                        <SearchIcon />
                     </IconButton>
-                </MenuItem>
-                <Menu
-                    id="menu-appbar"
-                    anchorEl={anchorElNotif}
-                    anchorOrigin={{
+            </Box>
+
+            <Box>
+                <IconButton onClick={colorMode.toggleColorMode}>
+                    {theme.palette.mode === "dark" ? (
+                        <DarkModeOutlinedIcon />
+                    ) : (
+                        <LightModeOutlinedIcon />
+                    )}
+                </IconButton>
+                <IconButton size="small" aria-label="show 17 new notifications" color="inherit" onClick={handleOpenNotifMenu}>
+                    <MenuItem>
+                        <Badge badgeContent={17} color="error">
+                            <NotificationsIcon/>
+                        </Badge>
+                    </MenuItem>
+                    <Menu
+                        id="menu-appbar"
+                        anchorEl={anchorElNotif}
+                        anchorOrigin={{
                         vertical: 'bottom',
                         horizontal: 'left',
-                    }}
-                    keepMounted
-                    transformOrigin={{
+                        }}
+                        keepMounted
+                        transformOrigin={{
                         vertical: 'top',
                         horizontal: 'left',
-                    }}
-                    open={Boolean(anchorElNotif)}
-                    onClose={handleCloseNotifMenu}
-                    sx={{
+                        }}
+                        open={Boolean(anchorElNotif)}
+                        onClose={handleCloseNotifMenu}
+                        sx={{
                         display: { md: 'block', sx: 'none' },
-                    }}
-                >
-                    <Typography>Notifications</Typography>
-                </Menu>
-
+                        }}
+                    >
+                        <Typography>Notifications</Typography>
+                    </Menu>
+                </IconButton>
+    
                 <Tooltip title="Open settings">
                     <IconButton onClick={handleOpenUserMenu}>
-                        <Avatar sx={{ height: '35px', width: '35px', color: "black" }}>{username[0]}</Avatar>
+                        <PersonOutlinedIcon />
                     </IconButton>
                 </Tooltip>
+
                 <Menu
                     sx={{ mt: '45px' }}
                     id="menu-appbar"
@@ -245,15 +244,15 @@ const DashHeader = () => {
                     open={Boolean(anchorElUser)}
                     onClose={handleCloseUserMenu}
                 >
-                    {/* Menu items with functional handlers */}
                     <MenuItem onClick={handleProfileClick}>Profile</MenuItem>
                     <MenuItem onClick={handleAccountClick}>Account</MenuItem>
                     <MenuItem onClick={handleDashboardClick}>Dashboard</MenuItem>
                     <MenuItem onClick={handleLogout}>Logout</MenuItem>
                 </Menu>
-                </div> 
-            </div>
-            );
+            </Box>
+
+        </Box>
+    )
 
 }
             export default DashHeader

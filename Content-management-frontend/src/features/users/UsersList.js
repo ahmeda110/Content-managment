@@ -46,13 +46,14 @@ const UsersList = () => {
     const { ids, entities } = users
         const rows = []
         Object.keys(entities).forEach((val) => {
-          if(entities[val].username === username)
+          if(entities[val].owner === username)
             rows.push(
               {
                 id: entities[val].id,
                 username: entities[val].username,
                 roles: entities[val].roles,
                 email: entities[val].email,
+                contract: entities[val].contract,
                 edit: entities[val]
               }
             )
@@ -61,6 +62,7 @@ const UsersList = () => {
       const columns = [
         {field: 'username', headerName: 'Username', width: 150, editable: false},
         {field: 'email', headerName: 'Email', width: 150, editable: false},
+        {field: 'contract', headerName: 'Contract', width: 150, editable: false},
         {field: 'roles', headerName: 'Roles', width: 150, editable: false},
         {field: 'edit', headerName: 'Edit', sortable: 'false', editable: false,
         renderCell: (params) => {
@@ -77,13 +79,7 @@ const UsersList = () => {
         }
         
       ]
-
-    let filteredIds
-    if (isManager || isAdmin) {
-      filteredIds = [...ids]
-    } else {
-      filteredIds = ids.filter(userId => entities[userId].owner === username)
-    }
+      
 
     const tableContent = ids?.length && ids.map(userId => <User key={userId} userId={userId} />)
 
@@ -110,23 +106,6 @@ const UsersList = () => {
           disableRowSelectionOnClick
           />
       </Box>
-      /*
-      <table className="table table--users">
-        <thead className="table__thead">
-          <tr>
-            <th scope="col" className="table__th user__username">Username</th>
-            <th scope="col" className="table__th">Email</th>
-            <th scope="col" className="table__th user__roles">Roles</th>
-            <th scope="col" className="table__th user__edit">Edit</th>
-            <th scope="col" className="table__th user__edit">id</th>
-            <th scope="col" className="table__th user__edit">owner</th>
-          </tr>
-        </thead>
-        <tbody>
-          {tableContent}
-        </tbody>
-      </table>
-      */
     )
   }
 

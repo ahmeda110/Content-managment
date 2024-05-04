@@ -5,9 +5,15 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSave, faTrashCan } from "@fortawesome/free-solid-svg-icons"
 import { ROLES } from "../../config/roles"
 
+import { Typography, TextField, Select, Box, MenuItem, FormControl, InputLabel, OutlinedInput, Tooltip } from "@mui/material";
+import Button from '@mui/material/Button'
+import Stack from '@mui/material/Stack'
+
+
 const USER_REGEX = /^[A-z]{3,20}$/
 const MAIL_REGEX = /^[A-z@.]{3,64}$/
 const PWD_REGEX = /^[A-z0-9!@#$%]{4,12}$/
+const CONT_REGEX = /^[0-9]{1,4}$/
 
 const EditUserForm = ({ user }) => {
 
@@ -35,6 +41,8 @@ const EditUserForm = ({ user }) => {
     const [roles, setRoles] = useState(user.roles)
     const [active, setActive] = useState(user.active)
     const [admin, setAdmin] = useState(false)
+    const [contract, setContract] = useState('')
+    const [validContract, setValidContract] = useState(false)
 
     useEffect(() => {
         setValidUsername(USER_REGEX.test(username))
@@ -49,12 +57,17 @@ const EditUserForm = ({ user }) => {
     }, [password]) 
 
     useEffect(() => {
+        setValidContract(CONT_REGEX.test(contract))
+    }, [contract]) 
+
+    useEffect(() => {
         console.log(isSuccess)
         if (isSuccess || isDelSuccess) {
             setUsername('')
             setEmail('')
             setPassword('')
             setRoles([])
+            setContract('')
             navigate('/dash/users')
         }
 
@@ -62,6 +75,7 @@ const EditUserForm = ({ user }) => {
 
     const onUsernameChanged = e => setUsername(e.target.value)
     const onEmailChanged = e => setEmail(e.target.value)
+    const onContractChanged = e => setContract(e.target.value)
     const onPasswordChanged = e => setPassword(e.target.value)
 
     const onRolesChanged = e => {
@@ -76,9 +90,9 @@ const EditUserForm = ({ user }) => {
 
     const onSaveUserClicked = async (e) => {
         if (password) {
-            await updateUser({ id: user.id, username, password, roles, active, email })
+            await updateUser({ id: user.id, username, password, roles, active, email, contract })
         } else {
-            await updateUser({ id: user.id, username, roles, active, email })
+            await updateUser({ id: user.id, username, roles, active, email, contract })
         }
     }
 
@@ -112,6 +126,134 @@ const EditUserForm = ({ user }) => {
 
 
     const content = (
+        //<p className={errClass}>{errContent}</p>
+
+        <Box
+        pl={'1%'}
+        component="form"
+        sx={{
+        '& > :not(style)': { m: 1, width: '25ch' }
+        }}
+        noValidate
+        autoComplete="off"
+        >
+            <form
+            onSubmit={e => e.preventDefault()}
+            style={{
+                paddingTop: "20px"
+            }}
+            >
+                <Typography variant='h6' component='div'>Edit User</Typography>
+
+                <div style={{ paddingTop: "20px" }}>
+                    <TextField
+                    required
+                    id="outlined-required"
+                    variant="outlined"
+                    label="Username [3-20 letters]"
+                    value={username}
+                    onChange={onUsernameChanged} />
+                </div>
+
+                <div style={{ paddingTop: "20px" }}>
+                    <TextField
+                    required
+                    id="outlined-required"
+                    variant="outlined"
+                    label="Email"
+                    value={email}
+                    onChange={onEmailChanged} />
+                </div>
+                <div style={{ paddingTop: "20px" }}>
+                    <TextField
+                    required
+                    id="outlined-required"
+                    variant="outlined"
+                    label="Contract (number)"
+                    value={contract}
+                    onChange={onContractChanged} />
+                </div>
+
+                <div style={{ paddingTop: "20px" }}>
+                    <TextField
+                    fullWidth
+                    required
+                    id="outlined-required"
+                    label="Password: (4-12 chars incl. !@#$%)"
+                    variant="outlined"
+                    value={password}
+                    onChange={onPasswordChanged} />
+                </div>
+                
+                {/*
+                <div
+                style={{
+                    paddingTop: "20px"
+                }}>
+                    <FormControl sx={{ minWidth: 210}}>
+                        <InputLabel>Assigned Roles</InputLabel>
+                        <Select
+                        label="Assigned Roles"
+                        id="roles"
+                        name="roles"
+                        multiple
+                        value={roles}
+                        onChange={handleChange}
+                        MenuProps={{
+                            PaperProps: {
+                                style: {
+                                maxHeight: 180,
+                                width: 210,
+                                },
+                            },
+                        }}
+                        >
+                            {options}
+                        </Select>
+                    </FormControl>
+                </div>
+                
+
+                <div
+                style={{
+                    paddingTop: "20px"
+                }}>
+                    <Tooltip title="An admin will be able to create users, only they can see their own created users." arrow>
+                        <FormControlLabel control={<Checkbox 
+                        checked={admin}
+                        onChange={onAdminChanged}
+                        inputProps={{ 'aria-label': 'controlled' }} />} label="is Admin?" />
+                    </Tooltip>                    
+                    
+                </div>
+                */}
+  
+                
+                <Stack className="logoutButton">
+                    <Button
+                    variant="contained"
+                    color="success"
+                    title="Save"
+                    disabled={!canSave}
+                    onClick={onSaveUserClicked}
+                    >
+                        Save
+                    </Button>
+                    <Button
+                    style={{marginTop: '20px'}}
+                    variant="contained"
+                    color="error"
+                    title="Delete"
+                    onClick={onDeleteUserClicked}
+                    >
+                        Delete
+                    </Button>
+                </Stack>
+
+            </form>
+
+        </Box>
+        /*
         <>
             <p className={errClass}>{errContent}</p>
 
@@ -198,6 +340,7 @@ const EditUserForm = ({ user }) => {
 
             </form>
         </>
+        */
     )
 
     return content

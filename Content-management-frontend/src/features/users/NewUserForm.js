@@ -34,6 +34,8 @@ const Owner = () => {
 }
 
 const NewUserForm = () => {
+    const ownerName = Owner()
+
     const [addNewUser, {
         isLoading,
         isSuccess,
@@ -108,7 +110,7 @@ const NewUserForm = () => {
     const onSaveUserClicked = async (e) => {
         e.preventDefault()
         if (canSave) {
-            await addNewUser({ username, password, roles, email, admin, owner, contract })
+            await addNewUser({ username, password, roles, email, admin, owner: ownerName, contract })
         }
     }
 

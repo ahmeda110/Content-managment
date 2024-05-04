@@ -5,6 +5,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSave, faTrashCan } from "@fortawesome/free-solid-svg-icons"
 import useAuth from "../../hooks/useAuth"
 
+import { Typography, TextField, Select, Box, MenuItem, FormControl, InputLabel, OutlinedInput, Tooltip } from "@mui/material";
+import Button from '@mui/material/Button'
+import Stack from '@mui/material/Stack'
+
 const EditTaskForm = ({ task, users }) => {
 
     const { isManager, isAdmin } = useAuth()
@@ -28,12 +32,27 @@ const EditTaskForm = ({ task, users }) => {
     const [text, setText] = useState(task.text)
     const [completed, setCompleted] = useState(task.completed)
     const [userId, setUserId] = useState(task.user)
+    
+    const [status, setStatus] = useState(task.status)
+    const [keywords, setKeywords] = useState(task.keywords)
+    const [sKeywords, setsKeywords] = useState(task.sKeywords)
+    const [country, setCountry] = useState(task.country)
+    const [webUrl, setWebsite] = useState(task.webUrl)
+    const [dueDate, setDate] = useState(task.dueDate)
+    //const [userId, setUserId] = useState(users[0].id)
+
+    
 
     useEffect(() => {
 
         if (isSuccess || isDelSuccess) {
             setTitle('')
             setText('')
+            setKeywords('')
+            setsKeywords('')
+            setCountry('')
+            setWebsite('')
+            setDate('')
             setUserId('')
             navigate('/dash/tasks')
         }
@@ -44,6 +63,13 @@ const EditTaskForm = ({ task, users }) => {
     const onTextChanged = e => setText(e.target.value)
     const onCompletedChanged = e => setCompleted(prev => !prev)
     const onUserIdChanged = e => setUserId(e.target.value)
+
+    const onKeywordsChanged = e => setKeywords(e.target.value)
+    const onsKeywordsChanged = e => setsKeywords(e.target.value)
+    const onCountryChanged = e => setCountry(e.target.value)
+    const onWebsiteChanged = e => setWebsite(e.target.value)
+    //const onDateChanged = e => setDate(e.target.value)
+    const onStatusChanged = e => setStatus(e.target.value)
 
     const canSave = [title, text, userId].every(Boolean) && !isLoading
 
@@ -91,6 +117,93 @@ const EditTaskForm = ({ task, users }) => {
     }
 
     const content = (
+        <Box
+        pl={'1%'}
+        component="form"
+        sx={{
+        '& > :not(style)': { m: 1, width: '25ch' }
+        }}
+        noValidate
+        autoComplete="off"
+        >
+          <form
+            onSubmit={e => e.preventDefault()}
+            style={{
+                paddingTop: "20px"
+            }}
+            >
+                <Typography variant='h6' component='div'>Edit Task</Typography>
+
+                <div style={{ paddingTop: "20px" }}>
+                    <TextField
+                    required
+                    id="outlined-required"
+                    variant="outlined"
+                    label="Title"
+                    value={title}
+                    onChange={onTitleChanged} />
+                </div>
+                <div style={{ paddingTop: "20px" }}>
+                    <TextField
+                    required
+                    id="outlined-required"
+                    variant="outlined"
+                    label="Text"
+                    value={text}
+                    onChange={onTextChanged} />
+                </div>
+                <div style={{ paddingTop: "20px" }}>
+                    <TextField
+                    required
+                    id="outlined-required"
+                    variant="outlined"
+                    label="Keywords"
+                    value={keywords}
+                    onChange={onKeywordsChanged} />
+                </div>
+                <div style={{ paddingTop: "20px" }}>
+                    <TextField
+                    required
+                    id="outlined-required"
+                    variant="outlined"
+                    label="Semantic Keywords"
+                    value={sKeywords}
+                    onChange={onsKeywordsChanged} />
+                </div>
+                <div style={{ paddingTop: "20px" }}>
+                    <TextField
+                    required
+                    id="outlined-required"
+                    variant="outlined"
+                    label="Website"
+                    value={webUrl}
+                    onChange={onWebsiteChanged} />
+                </div>
+
+                <Stack className="logoutButton">
+                    <Button
+                    variant="contained"
+                    color="success"
+                    title="Save"
+                    disabled={!canSave}
+                    onClick={onSaveTaskClicked}
+                    >
+                        Save
+                    </Button>
+                    <Button
+                    style={{marginTop: '20px'}}
+                    variant="contained"
+                    color="error"
+                    title="Delete"
+                    onClick={onDeleteTaskClicked}
+                    >
+                        Delete
+                    </Button>
+                </Stack>
+
+            </form>
+        </Box>
+        /*
         <>
             <p className={errClass}>{errContent}</p>
 
@@ -163,6 +276,7 @@ const EditTaskForm = ({ task, users }) => {
                 </div>
             </form>
         </>
+        */
     )
 
     return content

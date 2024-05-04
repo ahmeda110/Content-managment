@@ -11,6 +11,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 import { Cancel, Tag } from "@mui/icons-material";
+import dayjs, { Dayjs } from 'dayjs'
 
 
 import * as React from 'react';
@@ -489,11 +490,12 @@ const NewTaskForm = ({ users }) => {
 
     const [title, setTitle] = useState('')
     const [text, setText] = useState('')
+    const [status, setStatus] = useState('')
     const [keywords, setKeywords] = useState('')
     const [sKeywords, setsKeywords] = useState('')
     const [country, setCountry] = useState('')
-    const [website, setWebsite] = useState('')
-    const [date, setDate] = useState('')
+    const [webUrl, setWebsite] = useState('')
+    const [dueDate, setDate] = useState('')
     const [userId, setUserId] = useState(users[0].id)
 
     useEffect(() => {
@@ -502,7 +504,7 @@ const NewTaskForm = ({ users }) => {
             setText('')
             setKeywords('')
             setsKeywords('')
-            setCountry(null)
+            setCountry('')
             setWebsite('')
             setDate('')
             setUserId('')
@@ -516,15 +518,18 @@ const NewTaskForm = ({ users }) => {
     const onsKeywordsChanged = e => setsKeywords(e.target.value)
     const onCountryChanged = e => setCountry(e.target.value)
     const onWebsiteChanged = e => setWebsite(e.target.value)
-    const onDateChanged = e => setDate(e.target.value)
+    //const onDateChanged = e => setDate(e.target.value)
     const onUserIdChanged = e => setUserId(e.target.value)
+    const onStatusChanged = e => setStatus(e.target.value)
 
-    const canSave = [title, text, userId].every(Boolean) && !isLoading
+    const canSave = [title].every(Boolean) && !isLoading
 
     const onSaveTaskClicked = async (e) => {
         e.preventDefault()
         if (canSave) {
-            await addNewTask({ user: userId, title, text, owner: username, keywords, sKeywords, country, website, date })
+          //console.log("New Task ", "User: ",userId, "Title: ",title,"Text: ", text, "Owner: ",username)
+          //console.log(typeof(userId))
+            await addNewTask({ user: userId, title, text, owner: username, keywords, sKeywords, country, webUrl, dueDate }) // keywords, sKeywords, country, webUrl, date })
         }
     }
 
@@ -633,14 +638,20 @@ const NewTaskForm = ({ users }) => {
                 </div>
 
                 <div style={{ paddingTop: '20px'}}>
+                  <form onSubmit={onCountryChanged}>
                     <Autocomplete
-                    id="country-select-demo"
+                    //id="country-select-demo"
                     sx={{ width: 300 }}
                     options={countries}
                     autoHighlight
-                    getOptionLabel={(option) => option.label}
+                    onSubmit={onCountryChanged}
+                    //getOptionLabel={(option) => option.label || ""}
+                    getOptionLabel={(option) => option.label ? option.label : ""}
+                    defaultValue={country}
                     //value={country}
-                    onChange={onCountryChanged}
+                    //onChange={(e, value) => {console.log("VAL ",value.label); setCountry(value.label); }}
+                    //value={country}
+                    //onChange={onCountryChanged}
                     renderOption={(props, option) => (
                         <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
                         <img
@@ -659,11 +670,12 @@ const NewTaskForm = ({ users }) => {
                         label="Choose a country"
                         inputProps={{
                             ...params.inputProps,
-                            autoComplete: 'new-password', // disable autocomplete and autofill
+                            //autoComplete: 'new-password', // disable autocomplete and autofill
                         }}
                         />
                     )}
                     />
+                  </form>
                 </div>
 
                 <div
@@ -675,7 +687,7 @@ const NewTaskForm = ({ users }) => {
                         //required
                         id="outlined-flexible"
                         label="Website URL"
-                        value={website}
+                        value={webUrl}
                         onChange={onWebsiteChanged}
                     />
                 </div>
@@ -724,11 +736,11 @@ const NewTaskForm = ({ users }) => {
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <DemoContainer components={['DatePicker']}>
                             <DatePicker label="Due Date"
-                            value={date}
+                            value={dueDate}
                             onChange={(newValue) => {
-                                setDate(newValue);
+                              const formattedDate = dayjs(newValue).format('MM/DD/YYYY');
+                              setDate(formattedDate);
                             }}
-                           // onChange={onDateChanged} 
                            />
                         </DemoContainer>
                     </LocalizationProvider>
